@@ -57,15 +57,18 @@ public class RequestsManager {
     }
 
     public <T> Request<T> newRequest(String method, TypeReference<T> type) {
-        return new Request<T>(this, method, type);
+        return new Request<>(this, method, type);
     }
 
     public <T> void performRequest(Request<T> request, Response.Listener<T> listener, Response.ErrorListener errorListener) {
         String url = URLGenerator.generateURL(this.host, request.url, request.params);
         StringRequest stringRequest = new StringRequest(request.method, url, response -> {
             try {
-                listener.onResponse(new ObjectMapper().readValue(response, request.type));
-            } catch (IOException e) {
+                T parsedObject = new ObjectMapper().readValue(response, request.type);
+                if (parsedObject == null)
+                    throw new NullPointerException();
+                listener.onResponse(parsedObject);
+            } catch (IOException | NullPointerException e) {
                 errorListener.onErrorResponse(new ParseError(e));
             }
         }, errorListener);

@@ -34,6 +34,7 @@ public class LoginViewModel extends ViewModel {
                         editor.putString(context.getString(R.string.pref_password), password);
                     }
                     editor.apply();
+                    System.out.println(user.getFirstName() + " " + user.getLastname());
                     loginResult.setValue(new LoginResult(user));
                 },
                 error -> {
@@ -51,8 +52,8 @@ public class LoginViewModel extends ViewModel {
         boolean remember = sharedPreferences.getBoolean(context.getString(R.string.pref_remember), false);
         if (remember) {
             String username = sharedPreferences.getString(context.getString(R.string.pref_username), "");
-            String password = sharedPreferences.getString(context.getString(R.string.pref_username), "");
-            loginFormState.setValue(new LoginFormState(username, password));
+            String password = sharedPreferences.getString(context.getString(R.string.pref_password), "");
+            loginFormState.setValue(new LoginFormState(username, password, remember));
         }
     }
 

@@ -13,6 +13,7 @@ class LoginFormState {
     private boolean isDataValid;
     private String password = "";
     private String username = "";
+    private boolean remember = false;
     private boolean firstLoad = false;
 
     LoginFormState(@Nullable Integer usernameError, @Nullable Integer passwordError) {
@@ -21,9 +22,10 @@ class LoginFormState {
         this.isDataValid = false;
     }
 
-    LoginFormState(String username, String password) {
+    LoginFormState(String username, String password, boolean remember) {
         this.username = username;
         this.password = password;
+        this.remember = remember;
         firstLoad = true;
     }
 
@@ -55,7 +57,11 @@ class LoginFormState {
         return password;
     }
 
-    public boolean isFirstLoad() {
+    boolean isFirstLoad() {
         return firstLoad;
+    }
+
+    boolean isRemember() {
+        return remember;
     }
 }

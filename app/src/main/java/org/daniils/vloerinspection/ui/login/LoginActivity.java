@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             if (loginFormState.isFirstLoad()) {
                 usernameEditText.setText(loginFormState.getUsername());
                 passwordEditText.setText(loginFormState.getPassword());
+                rememberCheckbox.setChecked(loginFormState.isRemember());
             }
         });
 
