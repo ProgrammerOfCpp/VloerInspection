@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must not be empty</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="location_not_found">Location not found for the following shops:</string>
+    <string name="error_loading_shops">Error when loading shops.</string>
+    <string name="error_loading_jobs">Error when loading jobs!</string>
+    <string name="error_building_table">Error when buildig table!</string>
+</resources>

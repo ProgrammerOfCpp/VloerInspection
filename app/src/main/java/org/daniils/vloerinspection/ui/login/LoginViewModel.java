@@ -24,17 +24,16 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password, VloerAPI vloerAPI, Context context, boolean remember) {
-        vloerAPI.getUser(username, password,
+    public void login(String username, String password, boolean remember, Context context) {
+        new VloerAPI(context).getUser(username, password,
                 user -> {
                     SharedPreferences.Editor editor = getSharedPreferences(context).edit();
                     editor.putBoolean(context.getString(R.string.pref_remember), remember);
                     if (remember) {
-                        editor.putString(context.getString(R.string.pref_username), username);
-                        editor.putString(context.getString(R.string.pref_password), password);
+                        editor.putString(context.getString(R.string.username), username);
+                        editor.putString(context.getString(R.string.password), password);
                     }
                     editor.apply();
-                    System.out.println(user.getFirstName() + " " + user.getLastname());
                     loginResult.setValue(new LoginResult(user));
                 },
                 error -> {
@@ -47,13 +46,13 @@ public class LoginViewModel extends ViewModel {
         return context.getSharedPreferences(context.getString(R.string.app_preferences), Context.MODE_PRIVATE);
     }
 
-    public void loadFormIfRemembered(VloerAPI vloerAPI, Context context) {
+    public void loadFormIfRemembered(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         boolean remember = sharedPreferences.getBoolean(context.getString(R.string.pref_remember), false);
         if (remember) {
-            String username = sharedPreferences.getString(context.getString(R.string.pref_username), "");
-            String password = sharedPreferences.getString(context.getString(R.string.pref_password), "");
-            loginFormState.setValue(new LoginFormState(username, password, remember));
+            String username = sharedPreferences.getString(context.getString(R.string.username), "");
+            String password = sharedPreferences.getString(context.getString(R.string.password), "");
+            loginFormState.setValue(new LoginFormState(username, password, true));
         }
     }
 

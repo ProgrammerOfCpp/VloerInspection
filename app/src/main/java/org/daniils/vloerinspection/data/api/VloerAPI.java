@@ -6,9 +6,9 @@ import com.android.volley.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.daniils.vloerinspection.R;
+import org.daniils.vloerinspection.data.model.Job;
 import org.daniils.vloerinspection.data.model.Store;
 import org.daniils.vloerinspection.data.model.User;
-
 import java.util.List;
 
 public class VloerAPI {
@@ -25,7 +25,7 @@ public class VloerAPI {
         RequestsManager.Request<User> request = requestsManager.newRequest("get_lowes.php", new TypeReference<User>() {});
         request.setParameter("username", username);
         request.setParameter("password", password);
-        request.perform(listener, errorListener);
+        requestsManager.performJSONRequest(request, listener, errorListener);
     }
 
     public void getUserStores(int storeId,
@@ -36,6 +36,16 @@ public class VloerAPI {
                 "get_userstoress.php",
                 new TypeReference<List<Store>>() {});
         request.setParameter("store_id", storeId);
-        request.perform(listener, errorListener);
+        requestsManager.performJSONRequest(request, listener, errorListener);
+    }
+
+    public void getLocalInstallJobs(int installerId,
+                                    Response.Listener<List<Job>> listener,
+                                    Response.ErrorListener errorListener) {
+        RequestsManager.Request<List<Job>> request = requestsManager.newRequest(
+                "get_localinstalljobs.php",
+                new TypeReference<List<Job>>() {});
+        //request.setParameter("installer_id", installerId);
+        requestsManager.performJSONRequest(request, listener, errorListener);
     }
 }

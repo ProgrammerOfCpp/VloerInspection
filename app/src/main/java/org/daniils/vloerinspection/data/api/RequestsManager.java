@@ -18,21 +18,15 @@ import java.util.HashMap;
 
 public class RequestsManager {
 
-    public class Request<T> {
-        private RequestsManager requestsManager;
+    public static class Request<T> {
         private HashMap<String, String> params = new HashMap<>();
         private String url;
         private int method = Method.GET;
         private TypeReference<T> type;
 
-        Request(RequestsManager requestsManager, String url, TypeReference<T> type) {
-            this.requestsManager = requestsManager;
+        Request(String url, TypeReference<T> type) {
             this.url = url;
             this.type = type;
-        }
-
-        public void perform(Response.Listener<T> listener, Response.ErrorListener errorListener) {
-            requestsManager.performRequest(this, listener, errorListener);
         }
 
         public void setParameter(String key, String value) {
@@ -57,21 +51,39 @@ public class RequestsManager {
     }
 
     public <T> Request<T> newRequest(String method, TypeReference<T> type) {
-        return new Request<>(this, method, type);
+        return new Request<>(method, type);
     }
 
-    public <T> void performRequest(Request<T> request, Response.Listener<T> listener, Response.ErrorListener errorListener) {
+    public <T> void performJSONRequest(Request<T> request, Response.Listener<T> listener, Response.ErrorListener errorListener) {
         String url = URLGenerator.generateURL(this.host, request.url, request.params);
         StringRequest stringRequest = new StringRequest(request.method, url, response -> {
             try {
-                T parsedObject = new ObjectMapper().readValue(response, request.type);
+                T parsedObject = new ObjectMapper().readValue(filterResponse(response), request.type);
+                System.out.println(response);
                 if (parsedObject == null)
                     throw new NullPointerException();
                 listener.onResponse(parsedObject);
             } catch (IOException | NullPointerException e) {
+                e.printStackTrace();
                 errorListener.onErrorResponse(new ParseError(e));
             }
         }, errorListener);
         requestQueue.add(stringRequest);
+    }
+
+    public void performStringRequest(Request<String> request, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+        String url = URLGenerator.generateURL(this.host, request.url, request.params);
+        StringRequest stringRequest = new StringRequest(request.method, url, listener, errorListener);
+        requestQueue.add(stringRequest);
+    }
+
+    private String filterResponse(String response) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String line : response.split("\n")) {
+            if (!line.startsWith("<")) {
+                stringBuilder.append(line).append("\n");
+            }
+        }
+        return stringBuilder.toString();
     }
 }

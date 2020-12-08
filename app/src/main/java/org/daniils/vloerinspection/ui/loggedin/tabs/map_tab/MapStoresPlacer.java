@@ -1,10 +1,8 @@
-package org.daniils.vloerinspection.ui.map;
+package org.daniils.vloerinspection.ui.loggedin.tabs.map_tab;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Geocoder;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,25 +27,19 @@ public class MapStoresPlacer {
         alertBuilder = new StringBuilder();
     }
 
-    public void place(ShopsRequestResult requestResult) {
+    public void place(ShopsRequestResult requestResult) throws IOException {
         shouldShowAlert = false;
-        if (requestResult.getStoreMapViews() != null) {
-            placeMapViews(requestResult.getStoreMapViews());
-        } else {
-            Toast.makeText(context, requestResult.getErrorStringId(), Toast.LENGTH_SHORT).show();
-        }
+
+        placeMapViews(requestResult.getStoreMapViews());
+
         if (shouldShowAlert) {
             showAlert();
         }
     }
 
-    private void placeMapViews(List<StoreMapView> mapViews) {
+    private void placeMapViews(List<StoreMapView> mapViews) throws IOException {
         for (StoreMapView storeMapView : mapViews) {
-            try {
-                placeMapView(storeMapView);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            placeMapView(storeMapView);
         }
     }
 

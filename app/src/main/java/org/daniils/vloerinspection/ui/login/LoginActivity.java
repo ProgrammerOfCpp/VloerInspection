@@ -19,14 +19,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.daniils.vloerinspection.R;
-import org.daniils.vloerinspection.data.api.VloerAPI;
 import org.daniils.vloerinspection.data.model.User;
-import org.daniils.vloerinspection.ui.map.MapsActivity;
+import org.daniils.vloerinspection.ui.loggedin.LoggedInActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-    private VloerAPI vloerAPI;
 
     private ProgressBar loadingProgressBar;
     private EditText usernameEditText;
@@ -37,8 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        vloerAPI = new VloerAPI(this);
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
@@ -108,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(v -> login());
 
-        loginViewModel.loadFormIfRemembered(vloerAPI, this);
+        loginViewModel.loadFormIfRemembered(this);
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
@@ -120,11 +116,12 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.login(
                 usernameEditText.getText().toString(),
                 passwordEditText.getText().toString(),
-                vloerAPI, this, rememberCheckbox.isChecked());
+                rememberCheckbox.isChecked(),
+                this);
     }
 
     private void startMapsActivity(User user) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, LoggedInActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

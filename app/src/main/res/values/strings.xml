@@ -7,15 +7,11 @@
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must not be empty</string>
-    <string name="login_failed">"Login failed"</string>
     <string name="host_url">https://vloer.ca/mobile_app/</string>
-    <string name="location_not_found">Location not found for the following shopse:</string>
-    <string name="error_loading_shops">Error when loading shops.</string>
     <string name="remember">Remember</string>
-    <string name="pref_remember">remember</string>
-    <string name="app_preferences">VLOER_PREFERENCES</string>
-    <string name="pref_username">username</string>
-    <string name="pref_password">password</string>
+    <string name="map_tab">Map</string>
+    <string name="schedule_tab">Schedule</string>
+    <string name="error_loading_user">Error when loading user!</string>
+    <string name="error_placing_markers">Error when placing markers!</string>
+    <string name="calendar_tab">Calendar</string>
 </resources>
